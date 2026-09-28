@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 
 
+## [v1.145.0] - 2026-09-28
+
+This release adds ACP request trace propagation, new lint cops for code quality, and a fix for lean TUI scrollback preservation during partial tool calls.
+
+## What's New
+- Adds ACP request trace propagation using W3C `traceparent`/`tracestate` headers, with server spans for each of the 13 implemented agent protocol handlers
+- Adds `Lint/FieldsSeqLookup` cop to detect `strings.Fields` lookup patterns that could use `strings.FieldsSeq` instead
+- Adds `Lint/SlicesConcat` cop to flag nested `append` chains that could be replaced with `slices.Concat`
+
+## Bug Fixes
+- Fixes lean TUI scrollback being lost during partial tool calls by repainting only visible rows when a streaming tool call changes above the viewport
+
+## Technical Changes
+- Replaces multi-source `append` chains with `slices.Concat` across the codebase
+- Warms Linux and Windows Go build caches on main when tests are skipped
+### Pull Requests
+
+- [#4456](https://github.com/docker/docker-agent/pull/4456) - feat(lint): detect strings.FieldsSeq lookup opportunities
+- [#4461](https://github.com/docker/docker-agent/pull/4461) - refactor: replace append chains with slices.Concat
+- [#4471](https://github.com/docker/docker-agent/pull/4471) - feat(acp): propagate request traces and test capability matrix
+- [#4472](https://github.com/docker/docker-agent/pull/4472) - docs: update CHANGELOG.md for v1.144.0
+- [#4473](https://github.com/docker/docker-agent/pull/4473) - ci: warm Linux/Windows build caches when tests are skipped on main
+- [#4474](https://github.com/docker/docker-agent/pull/4474) - test(tui): fix startup resize race in hidden-frame tests
+- [#4477](https://github.com/docker/docker-agent/pull/4477) - fix: preserve lean TUI scrollback during partial tool calls
+- [#4478](https://github.com/docker/docker-agent/pull/4478) - chore(deps): bump the actions group across 2 directories with 6 updates
+
+
 ## [v1.144.0] - 2026-09-25
 
 This release expands ACP v1 compatibility with session management, audio prompts, client terminals, remote MCP servers, and host credential authentication, while also closing several sandbox and filesystem confinement gaps and improving TUI rendering performance.
@@ -6689,3 +6716,5 @@ This release improves the terminal user interface with better error handling and
 [v1.143.0]: https://github.com/docker/docker-agent/releases/tag/v1.143.0
 
 [v1.144.0]: https://github.com/docker/docker-agent/releases/tag/v1.144.0
+
+[v1.145.0]: https://github.com/docker/docker-agent/releases/tag/v1.145.0
